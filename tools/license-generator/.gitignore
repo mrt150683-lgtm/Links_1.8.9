@@ -1,6 +1,0 @@
-*.privkey
-*.lic
-*.licreq
-*.exe
-node_modules/
-dist/
