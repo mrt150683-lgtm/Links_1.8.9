@@ -8,6 +8,15 @@ It helps you collect material, organise it into isolated project spaces, and tur
 
 **Links is now open source.** I built most of this solo. There is a lot already working, a lot that still needs polish, and a lot more I want to build. If you find it useful, break it, improve it, or want to help push it further, contributions are welcome.
 
+### Demo
+
+[![Links Demo](https://img.youtube.com/vi/GZ0X_1NZYqk/0.jpg)](https://youtu.be/GZ0X_1NZYqk?si=YOjPGhByWmNtAbky)
+
+### Download
+
+- [**Links Setup 1.8.9.exe**](https://github.com/mrt150683-lgtm/Links_1.8.9/releases/download/v1.8.9/Links.Setup.1.8.9.exe) — Windows installer
+- [**Links_v1.8.9.exe**](https://github.com/mrt150683-lgtm/Links_1.8.9/releases/download/v1.8.9/Links_v1.8.9.exe) — Portable executable (no install required)
+
 ---
 
 ## Table of Contents
@@ -26,6 +35,7 @@ It helps you collect material, organise it into isolated project spaces, and tur
 - [Research and Intelligence Systems](#research-and-intelligence-systems)
 - [Chat, Voice, and User Personalisation](#chat-voice-and-user-personalisation)
 - [Desktop App, Browser, and Extension](#desktop-app-browser-and-extension)
+- [OpenClaw Integration](#openclaw-integration)
 - [Security and Privacy Model](#security-and-privacy-model)
 - [Design System](#design-system)
 - [Observability and Audit Trail](#observability-and-audit-trail)
@@ -520,6 +530,16 @@ The browser extension supports:
 - token-based authentication and rotation
 
 The extension is minimal on purpose: capture quickly, then get out of the way.
+
+---
+
+## OpenClaw Integration
+
+Links integrates natively with [OpenClaw](https://github.com/openclaw/openclaw) via a secure shell wrapper (`links.sh`).
+
+Your OpenClaw agent can manage pots, capture entries, chat, run deep research agents, query RSS/journal/calendar/health — everything stays local and mediated through the wrapper (no direct HTTP allowed).
+
+Full command list, syntax, and examples: [`SKILL.md`](https://github.com/mrt150683-lgtm/Links_1.8.9/blob/main/SKILL.md)
 
 ---
 
