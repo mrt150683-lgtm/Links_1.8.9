@@ -1,0 +1,28 @@
+{
+  "name": "@links/deep-research",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@links/ai": "workspace:*",
+    "@links/config": "workspace:*",
+    "@links/core": "workspace:*",
+    "@links/logging": "workspace:*",
+    "@links/storage": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,1569 @@
+/* ── PotChat ─ Obsidian + Gold theme ────────────────────────────── */
+
+.pot-chat {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  color: var(--text-0);
+  font-family: var(--font-ui);
+  overflow: hidden;
+}
+
+/* Fullscreen overlay — sits above everything */
+.pot-chat--fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: var(--bg-0);
+}
+
+/* ── Main area ──────────────────────────────────────────────────── */
+.pot-chat__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+}
+
+/* ── Header ─────────────────────────────────────────────────────── */
+.pot-chat__header {
+  height: 52px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-4);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.pot-chat__header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.pot-chat__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--gold-1);
+  font-weight: 500;
+}
+
+.pot-chat__logo span {
+  color: var(--text-0);
+}
+
+.pot-chat__divider {
+  width: 1px;
+  height: 16px;
+  background: var(--border-subtle);
+}
+
+.pot-chat__ctx-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  font-size: 11px;
+  color: var(--text-2);
+}
+
+.pot-chat__header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.pot-chat__model-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.pot-chat__model-name {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.pot-chat__model-ctx {
+  font-size: 11px;
+  color: var(--text-2);
+  opacity: 0.6;
+}
+
+.pot-chat__ctx-bar {
+  width: 128px;
+  height: 6px;
+  background: var(--surface-1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.pot-chat__ctx-fill {
+  height: 100%;
+  background: var(--gold-1);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.pot-chat__icon-btn {
+  padding: var(--space-2);
+  background: none;
+  border: none;
+  border-radius: var(--r-button);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pot-chat__icon-btn:hover {
+  color: var(--text-0);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pot-chat__icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Knowledge mode toggle ──────────────────────────────────────── */
+
+/* Open (unlocked) state — gold tint signals expanded capability */
+.pot-chat__knowledge-btn--open {
+  color: var(--gold, #d4af37) !important;
+  background: rgba(212, 175, 55, 0.1) !important;
+  border-radius: var(--r-button);
+}
+
+.pot-chat__knowledge-btn--open:hover {
+  background: rgba(212, 175, 55, 0.18) !important;
+}
+
+/* ── Timeline ───────────────────────────────────────────────────── */
+.pot-chat__timeline {
+  flex: 1;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  padding: var(--space-4);
+}
+
+.pot-chat__timeline--compact {
+  padding: var(--space-3);
+}
+
+.pot-chat__timeline-spacer {
+  height: var(--space-6);
+}
+
+.pot-chat__timeline--compact .pot-chat__timeline-spacer {
+  height: var(--space-4);
+}
+
+/* ── Message bubble ─────────────────────────────────────────────── */
+.pot-chat__msg {
+  display: flex;
+  flex-direction: column;
+  max-width: 768px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.pot-chat__msg--user {
+  align-items: flex-end;
+}
+
+.pot-chat__msg--assistant {
+  align-items: flex-start;
+}
+
+.pot-chat__bubble {
+  border-radius: 16px;
+  max-width: 85%;
+  padding: var(--space-3) var(--space-4);
+}
+
+.pot-chat__msg--compact .pot-chat__bubble {
+  padding: var(--space-2) var(--space-3);
+}
+
+.pot-chat__bubble--user {
+  background: var(--surface-1);
+  color: var(--text-0);
+  border-bottom-right-radius: 4px;
+}
+
+.pot-chat__bubble--assistant {
+  background: transparent;
+  color: var(--text-1);
+}
+
+.pot-chat__bubble--error {
+  color: var(--danger);
+}
+
+.pot-chat__bubble-text {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+/* ── Citations ──────────────────────────────────────────────────── */
+.pot-chat__citations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.pot-chat__msg--compact .pot-chat__citations {
+  margin-top: var(--space-2);
+}
+
+.pot-chat__citation-chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--surface-0);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  padding: 4px 6px 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.pot-chat__citation-chip:hover {
+  border-color: var(--gold-2);
+}
+
+.pot-chat__citation-title {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-1);
+}
+
+.pot-chat__citation-chip:hover .pot-chat__citation-title {
+  color: var(--text-0);
+}
+
+.pot-chat__citation-conf {
+  color: var(--text-2);
+}
+
+.pot-chat__citation-snippet {
+  display: none;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-2);
+  font-style: italic;
+  border-left: 1px solid var(--border-subtle);
+  padding-left: var(--space-2);
+  margin-left: var(--space-1);
+}
+
+.pot-chat__citation-chip:hover .pot-chat__citation-snippet {
+  display: inline-block;
+}
+
+.pot-chat__citation-add {
+  padding: 2px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  display: flex;
+}
+
+.pot-chat__citation-add:hover {
+  color: var(--gold-1);
+  background: var(--surface-1);
+}
+
+.pot-chat__no-citation {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--gold-2);
+  background: rgba(214, 191, 116, 0.08);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(214, 191, 116, 0.15);
+  width: fit-content;
+  margin-top: var(--space-3);
+}
+
+.pot-chat__msg--compact .pot-chat__no-citation {
+  margin-top: var(--space-2);
+}
+
+/* ── Composer ───────────────────────────────────────────────────── */
+.pot-chat__composer {
+  background: var(--bg-0);
+  border-top: 1px solid var(--border-subtle);
+  padding: var(--space-4);
+  flex-shrink: 0;
+}
+
+.pot-chat__composer--compact {
+  padding: var(--space-2);
+}
+
+.pot-chat__composer-inner {
+  max-width: 768px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  background: var(--surface-0);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: var(--space-2);
+  transition: border-color 0.15s;
+  box-shadow: var(--shadow-soft);
+}
+
+.pot-chat__composer-inner:focus-within {
+  border-color: var(--gold-2);
+}
+
+.pot-chat__composer-btn {
+  padding: var(--space-2);
+  background: none;
+  border: none;
+  border-radius: var(--r-input);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pot-chat__composer-btn:hover {
+  color: var(--gold-1);
+  background: var(--surface-1);
+}
+
+.pot-chat__composer-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.pot-chat__mode-btn {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: var(--space-1) var(--space-2);
+  white-space: nowrap;
+  color: var(--text-3);
+  border-right: 1px solid var(--border-subtle);
+  border-radius: 0;
+}
+
+.pot-chat__mode-btn--active {
+  color: var(--gold-1);
+}
+
+.pot-chat__textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  max-height: 192px;
+  min-height: 40px;
+  padding: var(--space-2);
+  color: var(--text-0);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.pot-chat__textarea::placeholder {
+  color: var(--text-2);
+  opacity: 0.5;
+}
+
+.pot-chat__send-btn {
+  padding: var(--space-2);
+  background: var(--gold-1);
+  color: var(--bg-0);
+  border: none;
+  border-radius: var(--r-input);
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pot-chat__send-btn:hover {
+  background: var(--gold-0);
+}
+
+.pot-chat__send-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pot-chat__send-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Voice button ──────────────────────────────────────────────────────── */
+
+.pot-chat__voice-btn--active {
+  color: #e05252;
+}
+
+.pot-chat__voice-btn--active svg {
+  animation: voice-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes voice-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.15); }
+}
+
+.pot-chat__composer-footer {
+  max-width: 768px;
+  margin: var(--space-2) auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: var(--text-2);
+  opacity: 0.6;
+}
+
+.pot-chat__saved-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--success);
+  opacity: 0.8;
+}
+
+.pot-chat__save-link {
+  background: none;
+  border: none;
+  color: var(--text-2);
+  cursor: pointer;
+  font-size: 10px;
+  transition: color 0.15s;
+}
+
+.pot-chat__save-link:hover {
+  color: var(--text-0);
+}
+
+/* ── Right panel ────────────────────────────────────────────────── */
+.pot-chat__right-panel {
+  width: 320px;
+  border-left: 1px solid var(--border-subtle);
+  background: var(--surface-0);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.pot-chat__panel-tabs {
+  display: flex;
+  padding: var(--space-2);
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.pot-chat__panel-tab {
+  flex: 1;
+  padding: 6px 0;
+  font-size: 12px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.pot-chat__panel-tab:hover {
+  color: var(--text-1);
+  background: var(--surface-1);
+}
+
+.pot-chat__panel-tab--active {
+  background: var(--surface-1);
+  color: var(--text-0);
+}
+
+.pot-chat__panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-3);
+}
+
+/* ── Active context panel ───────────────────────────────────────── */
+.pot-chat__ctx-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-1);
+  margin-bottom: var(--space-3);
+}
+
+.pot-chat__ctx-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pot-chat__ctx-clear {
+  font-size: 11px;
+  color: var(--text-2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.pot-chat__ctx-clear:hover {
+  color: var(--danger);
+}
+
+.pot-chat__ctx-empty {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-2);
+  padding: var(--space-8) 0;
+  line-height: 1.6;
+}
+
+.pot-chat__ctx-item {
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-button);
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.pot-chat__ctx-item-title {
+  font-size: 13px;
+  color: var(--text-0);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pot-chat__ctx-item-size {
+  font-size: 11px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+.pot-chat__ctx-item-remove {
+  padding: 4px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: var(--text-2);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
+  display: flex;
+}
+
+.pot-chat__ctx-item:hover .pot-chat__ctx-item-remove {
+  opacity: 1;
+}
+
+.pot-chat__ctx-item-remove:hover {
+  color: var(--danger);
+  background: var(--surface-0);
+}
+
+/* ── Knowledge browser ──────────────────────────────────────────── */
+.pot-chat__kb-search {
+  position: relative;
+  margin-bottom: var(--space-3);
+}
+
+.pot-chat__kb-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  color: var(--text-2);
+  width: 16px;
+  height: 16px;
+}
+
+.pot-chat__kb-input {
+  width: 100%;
+  background: var(--bg-0);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-button);
+  padding: 8px 12px 8px 32px;
+  font-size: 13px;
+  color: var(--text-0);
+  font-family: var(--font-ui);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.pot-chat__kb-input::placeholder {
+  color: var(--text-2);
+  opacity: 0.5;
+}
+
+.pot-chat__kb-input:focus {
+  border-color: var(--gold-2);
+}
+
+.pot-chat__kb-filters {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+
+.pot-chat__kb-filter {
+  padding: 4px 10px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  background: var(--surface-1);
+  color: var(--text-2);
+}
+
+.pot-chat__kb-filter:hover {
+  background: var(--surface-0);
+  color: var(--text-0);
+}
+
+.pot-chat__kb-filter--active {
+  background: var(--gold-1);
+  color: var(--bg-0);
+}
+
+.pot-chat__kb-filter--active:hover {
+  background: var(--gold-0);
+  color: var(--bg-0);
+}
+
+.pot-chat__kb-entry {
+  background: rgba(27, 35, 44, 0.5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-button);
+  padding: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  margin-bottom: var(--space-2);
+}
+
+.pot-chat__kb-entry:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.pot-chat__kb-entry-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.pot-chat__kb-entry-info {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.pot-chat__kb-entry-title {
+  font-size: 13px;
+  color: var(--text-0);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pot-chat__kb-entry-summary {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pot-chat__kb-toggle {
+  padding: 6px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
+}
+
+.pot-chat__kb-toggle--inactive {
+  background: var(--surface-1);
+  color: var(--text-2);
+}
+
+.pot-chat__kb-toggle--inactive:hover {
+  color: var(--gold-1);
+  background: var(--surface-0);
+}
+
+.pot-chat__kb-toggle--active {
+  background: rgba(214, 191, 116, 0.15);
+  color: var(--gold-1);
+}
+
+.pot-chat__kb-toggle--active:hover {
+  background: rgba(214, 191, 116, 0.25);
+}
+
+/* ── Modal backdrop ─────────────────────────────────────────────── */
+.pot-chat__modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  padding: var(--space-4);
+}
+
+.pot-chat__modal {
+  background: var(--surface-0);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-card);
+  width: 100%;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+}
+
+.pot-chat__modal--sm {
+  max-width: 448px;
+  max-height: 85vh;
+}
+
+.pot-chat__modal--md {
+  max-width: 672px;
+  max-height: 80vh;
+}
+
+.pot-chat__modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.pot-chat__modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.pot-chat__modal-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-0);
+}
+
+.pot-chat__modal-close {
+  background: none;
+  border: none;
+  color: var(--text-2);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  transition: color 0.15s;
+}
+
+.pot-chat__modal-close:hover {
+  color: var(--text-0);
+}
+
+.pot-chat__modal-body {
+  padding: var(--space-6);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.pot-chat__modal-footer {
+  padding: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+/* ── Entry viewer ───────────────────────────────────────────────── */
+.pot-chat__ev-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.pot-chat__ev-section-label {
+  font-size: 11px;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-2);
+}
+
+.pot-chat__ev-summary {
+  font-size: 13px;
+  color: var(--text-1);
+}
+
+.pot-chat__ev-bullets {
+  list-style: none;
+  margin-top: var(--space-2);
+}
+
+.pot-chat__ev-bullet {
+  font-size: 13px;
+  color: var(--text-2);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.pot-chat__ev-bullet-dot {
+  color: var(--gold-1);
+  margin-top: 2px;
+}
+
+.pot-chat__ev-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pot-chat__ev-tag {
+  padding: 2px 8px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-1);
+}
+
+.pot-chat__ev-entity {
+  padding: 2px 8px;
+  background: rgba(214, 191, 116, 0.08);
+  border: 1px solid rgba(214, 191, 116, 0.15);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--gold-1);
+}
+
+.pot-chat__ev-content {
+  background: var(--bg-0);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-button);
+  padding: var(--space-4);
+  font-size: 13px;
+  color: var(--text-2);
+  white-space: pre-wrap;
+  font-family: monospace;
+}
+
+.pot-chat__ev-image {
+  position: relative;
+  display: inline-block;
+  border-radius: var(--r-button);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+}
+
+.pot-chat__ev-image img {
+  max-width: 320px;
+  display: block;
+  object-fit: cover;
+}
+
+.pot-chat__ev-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.pot-chat__ev-image:hover .pot-chat__ev-image-overlay {
+  opacity: 1;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────── */
+.pot-chat__btn-text {
+  padding: var(--space-2) var(--space-4);
+  font-size: 13px;
+  color: var(--text-2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.pot-chat__btn-text:hover {
+  color: var(--text-0);
+}
+
+.pot-chat__btn-gold {
+  padding: var(--space-2) var(--space-4);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--bg-0);
+  background: var(--gold-1);
+  border: none;
+  border-radius: var(--r-button);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pot-chat__btn-gold:hover {
+  background: var(--gold-0);
+}
+
+/* ── Lightbox ───────────────────────────────────────────────────── */
+.pot-chat__lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(12px);
+}
+
+.pot-chat__lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.pot-chat__lightbox-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  padding: var(--space-2);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: color 0.15s;
+  display: flex;
+}
+
+.pot-chat__lightbox-close:hover {
+  color: white;
+}
+
+/* ── Settings modal ─────────────────────────────────────────────── */
+.pot-chat__settings-section {
+  margin-bottom: var(--space-6);
+}
+
+.pot-chat__settings-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-1);
+  margin-bottom: var(--space-2);
+}
+
+.pot-chat__settings-select {
+  width: 100%;
+  background: var(--bg-0);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-button);
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--text-0);
+  font-family: var(--font-ui);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.pot-chat__settings-select:focus {
+  border-color: var(--gold-2);
+}
+
+.pot-chat__settings-hint {
+  font-size: 11px;
+  color: var(--text-2);
+  margin-top: var(--space-1);
+}
+
+.pot-chat__toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: var(--space-1) 0;
+}
+
+.pot-chat__toggle-label {
+  font-size: 13px;
+  color: var(--text-1);
+  transition: color 0.15s;
+}
+
+.pot-chat__toggle-row:hover .pot-chat__toggle-label {
+  color: var(--text-0);
+}
+
+.pot-chat__toggle-switch {
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  border: none;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+  background: var(--surface-1);
+  padding: 0;
+}
+
+.pot-chat__toggle-switch--on {
+  background: var(--gold-1);
+}
+
+.pot-chat__toggle-knob {
+  position: absolute;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  transition: left 0.2s;
+  left: 4px;
+}
+
+.pot-chat__toggle-switch--on .pot-chat__toggle-knob {
+  left: 20px;
+}
+
+/* ── Entry icon ─────────────────────────────────────────────────── */
+.pot-chat__entry-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pot-chat__entry-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Loading ────────────────────────────────────────────────────── */
+.pot-chat__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-2);
+  font-size: 14px;
+}
+
+/* ── Sending indicator ──────────────────────────────────────────── */
+.pot-chat__sending {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  max-width: 768px;
+  margin: 0 auto;
+  width: 100%;
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+@keyframes pot-chat-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.pot-chat__sending-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-1);
+  animation: pot-chat-pulse 1.4s infinite;
+}
+
+.pot-chat__sending-dot:nth-child(2) { animation-delay: 0.2s; }
+.pot-chat__sending-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* ── Markdown rendered content ──────────────────────────────────── */
+.pot-chat__md {
+  line-height: 1.7;
+  color: var(--text-1);
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.pot-chat__md > *:first-child { margin-top: 0; }
+.pot-chat__md > *:last-child { margin-bottom: 0; }
+
+.pot-chat__md h1,
+.pot-chat__md h2,
+.pot-chat__md h3 {
+  color: var(--text-0);
+  font-weight: 600;
+  margin: 1.25em 0 0.5em;
+  line-height: 1.3;
+}
+
+.pot-chat__md h1 { font-size: 1.25em; }
+.pot-chat__md h2 { font-size: 1.1em; }
+.pot-chat__md h3 { font-size: 1em; }
+
+.pot-chat__md h4,
+.pot-chat__md h5,
+.pot-chat__md h6 {
+  color: var(--text-1);
+  font-weight: 500;
+  margin: 1em 0 0.4em;
+}
+
+.pot-chat__md p {
+  margin: 0.7em 0;
+}
+
+.pot-chat__md ul,
+.pot-chat__md ol {
+  margin: 0.6em 0;
+  padding-left: 1.5em;
+}
+
+.pot-chat__md li {
+  margin: 0.3em 0;
+}
+
+.pot-chat__md li > p { margin: 0.2em 0; }
+
+.pot-chat__md blockquote {
+  border-left: 3px solid var(--gold-2);
+  margin: 0.8em 0;
+  padding: 4px 12px;
+  color: var(--text-2);
+  font-style: italic;
+}
+
+.pot-chat__md code {
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.875em;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--gold-1);
+}
+
+.pot-chat__md pre {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 0.8em 0;
+}
+
+.pot-chat__md pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-0);
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+.pot-chat__md hr {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  margin: 1em 0;
+}
+
+.pot-chat__md a {
+  color: var(--gold-1);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(214, 191, 116, 0.4);
+}
+
+.pot-chat__md a:hover {
+  text-decoration-color: var(--gold-1);
+}
+
+.pot-chat__md table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.8em 0;
+  font-size: 13px;
+}
+
+.pot-chat__md th {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-0);
+  font-weight: 500;
+  text-align: left;
+  padding: 7px 12px;
+  border-bottom: 2px solid var(--border-subtle);
+}
+
+.pot-chat__md td {
+  padding: 6px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-1);
+}
+
+.pot-chat__md tr:last-child td { border-bottom: none; }
+
+/* GFM task list checkboxes */
+.pot-chat__md input[type="checkbox"] {
+  margin-right: 6px;
+  accent-color: var(--gold-1);
+}
+
+/* ── Typewriter replay ───────────────────────────────────────────── */
+.pot-chat__replay-text {
+  white-space: pre-wrap;
+  line-height: 1.7;
+  font-size: 14px;
+  color: var(--text-1);
+  word-break: break-word;
+}
+
+@keyframes pot-chat-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.pot-chat__replay-live {
+  margin-bottom: 0;
+}
+.pot-chat__replay-live > *:last-child {
+  margin-bottom: 0;
+}
+
+.pot-chat__replay-cursor {
+  display: inline-block;
+  color: var(--gold-1);
+  animation: pot-chat-blink 0.9s steps(1) infinite;
+  margin-left: 1px;
+  font-size: 1em;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.pot-chat__replay-skip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: var(--space-3);
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-2);
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.pot-chat__replay-skip:hover {
+  color: var(--text-0);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--surface-0);
+}
+
+/* ── Sources panel ──────────────────────────────────────────────── */
+.pot-chat__sources {
+  margin-top: var(--space-4);
+}
+
+.pot-chat__msg--compact .pot-chat__sources {
+  margin-top: var(--space-2);
+}
+
+.pot-chat__sources-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.pot-chat__sources-header:hover {
+  color: var(--text-0);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.pot-chat__sources-chevron {
+  transition: transform 0.2s;
+  opacity: 0.6;
+}
+
+.pot-chat__sources-chevron--open {
+  transform: rotate(180deg);
+}
+
+.pot-chat__sources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: var(--space-2);
+}
+
+/* ── Citation cards ──────────────────────────────────────────────── */
+.pot-chat__cit-card {
+  background: var(--surface-0);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.pot-chat__cit-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--surface-1);
+}
+
+.pot-chat__cit-card-top {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.pot-chat__cit-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: var(--text-2);
+}
+
+.pot-chat__cit-title {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-0);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pot-chat__cit-conf {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.pot-chat__cit-snippet {
+  font-size: 11px;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid var(--border-subtle);
+  font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* No sources note */
+.pot-chat__no-citation {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-2);
+  opacity: 0.5;
+  margin-top: var(--space-3);
+}
+
+.pot-chat__msg--compact .pot-chat__no-citation {
+  margin-top: var(--space-2);
+}
+
+/* ── Speed slider ────────────────────────────────────────────────── */
+.pot-chat__speed-slider {
+  width: 100%;
+  accent-color: var(--gold-1);
+  cursor: pointer;
+}
+
+/* ── Voice Panel (Phase G) ───────────────────────────────────────── */
+.voice-panel {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  width: min(400px, 90vw);
+  background: var(--surface-0);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 20;
+  backdrop-filter: blur(8px);
+}
+
+.voice-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.voice-panel__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: voice-dot-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes voice-dot-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.voice-panel__phase {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-1);
+  flex: 1;
+}
+
+.voice-panel__stop {
+  background: none;
+  border: none;
+  color: var(--text-2);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.voice-panel__stop:hover {
+  color: #e05252;
+  background: rgba(224, 82, 82, 0.1);
+}
+
+.voice-panel__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.voice-panel__label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-2);
+  flex-shrink: 0;
+  margin-top: 1px;
+  min-width: 28px;
+}
+
+.voice-panel__label--err {
+  color: #e05252;
+}
+
+.voice-panel__text {
+  color: var(--text-1);
+}
+
+.voice-panel__text--response {
+  color: var(--text-0);
+}
+
+.voice-panel__text--err {
+  color: #e05252;
+}
+
+

@@ -1,0 +1,305 @@
+/* Links UI - Obsidian + Gold Design System */
+
+:root {
+  /* Obsidian backgrounds */
+  --bg-0: #10141A;
+  --bg-1: #131A21;
+
+  /* Glass panel surfaces */
+  --surface-0: #171E26;
+  --surface-1: #1B232C;
+
+  /* Borders */
+  --border-subtle: #2A333D;
+
+  /* Text colors */
+  --text-0: #E8EEF6;
+  --text-1: #A9B4C0;
+  --text-2: #7D8A98;
+
+  /* Gold/Brass accents */
+  --gold-0: #F0E1B0;
+  --gold-1: #D6BF74;
+  --gold-2: #A88340;
+  --gold-3: #6B5328;
+
+  /* State colors */
+  --success: #4FB06D;
+  --warning: #D6BF74;
+  --danger: #D06A6A;
+
+  /* Radius */
+  --r-card: 16px;
+  --r-input: 12px;
+  --r-button: 10px;
+
+  /* Shadows */
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.35);
+  --shadow-gold: 0 0 0 1px rgba(214, 191, 116, 0.55), 0 12px 30px rgba(0, 0, 0, 0.35);
+
+  /* Spacing (8pt grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* Typography */
+  --font-ui: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-brand: Cinzel, "Trajan Pro", "Times New Roman", serif;
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 450;
+  line-height: 1.5;
+  color: var(--text-0);
+  background: linear-gradient(180deg, #0E1217 0%, var(--bg-0) 45%, #0C1015 100%);
+  background-attachment: fixed;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-0);
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+a {
+  color: var(--gold-1);
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+
+a:hover {
+  color: var(--gold-0);
+}
+
+/* Utilities */
+.gold {
+  color: var(--gold-1);
+}
+
+.text-muted {
+  color: var(--text-2);
+}
+
+.small-caps {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.85em;
+}
+
+/* Panel/Card Base */
+.panel {
+  background: linear-gradient(180deg, var(--surface-0) 0%, #141B22 100%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-soft);
+  transition: transform 140ms ease, border-color 140ms ease;
+}
+
+.panel:hover {
+  border-color: #3A4653;
+  transform: translateY(-2px);
+}
+
+.panel--active {
+  box-shadow: var(--shadow-gold);
+  border-color: rgba(214, 191, 116, 0.55);
+}
+
+/* Button Base */
+button {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--text-0);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--r-button);
+  transition: all 120ms ease;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--gold-1) 0%, var(--gold-2) 100%);
+  color: var(--bg-0);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(168, 131, 64, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, var(--gold-0) 0%, var(--gold-1) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(168, 131, 64, 0.4);
+}
+
+.btn-secondary {
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--gold-2);
+  background: var(--surface-0);
+}
+
+.btn-ghost {
+  color: var(--text-1);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  color: var(--gold-1);
+  background: rgba(23, 30, 38, 0.5);
+}
+
+/* Input Base */
+input, textarea, select {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-input);
+  color: var(--text-0);
+  padding: var(--space-2) var(--space-3);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+  width: 100%;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--gold-2);
+  box-shadow: 0 0 0 2px rgba(214, 191, 116, 0.35);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-2);
+}
+
+/* Badge/Chip */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  background: var(--bg-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+
+.badge--gold {
+  border-color: var(--gold-3);
+  color: var(--gold-1);
+}
+
+.badge--success {
+  border-color: rgba(79, 176, 109, 0.3);
+  color: var(--success);
+}
+
+.badge--danger {
+  border-color: rgba(208, 106, 106, 0.3);
+  color: var(--danger);
+}
+
+/* Emoji Icon Frame */
+.icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, rgba(214, 191, 116, 0.15) 0%, rgba(168, 131, 64, 0.08) 100%);
+  border: 1px solid rgba(214, 191, 116, 0.3);
+  border-radius: 12px;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.icon-badge--compact {
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+}
+
+/* Loading Shimmer */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-0) 0%, var(--surface-1) 50%, var(--surface-0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--r-input);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-3);
+}

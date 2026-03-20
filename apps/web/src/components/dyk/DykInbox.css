@@ -1,0 +1,19 @@
+/* DYK Inbox */
+.dyk-inbox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dyk-inbox__loading,
+.dyk-inbox__error,
+.dyk-inbox__empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted, #888);
+  font-size: 0.9rem;
+}
+
+.dyk-inbox__empty p {
+  margin: 0;
+}

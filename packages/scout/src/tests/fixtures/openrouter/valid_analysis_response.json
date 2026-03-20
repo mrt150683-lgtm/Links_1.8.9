@@ -1,0 +1,18 @@
+{
+  "id": "gen-test-fixture-001",
+  "choices": [
+    {
+      "message": {
+        "role": "assistant",
+        "content": "{\"repo\":{\"full_name\":\"example/repo-alpha\"},\"scores\":{\"interestingness\":0.8,\"novelty\":0.7,\"collaboration_potential\":0.75},\"reasons\":{\"interestingness\":[\"Novel vector indexing approach\",\"Clean API design\"],\"novelty\":[\"Custom HNSW implementation\"],\"collaboration_potential\":[\"REST API available\",\"SDK for Python and JS\"]},\"signals\":{\"problem_summary\":\"High-performance vector database for ML applications\",\"who_is_it_for\":\"ML engineers and data scientists\",\"integration_surface\":[\"API\",\"SDK\",\"CLI\"],\"risk_flags\":[]},\"keywords\":{\"primary\":[\"vector\",\"database\",\"embeddings\"],\"secondary\":[\"HNSW\",\"ANN\",\"similarity\",\"search\"],\"search_queries\":[\"vector database open source\",\"embedding storage\"]}}"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "model": "anthropic/claude-3-5-haiku-20241022",
+  "usage": {
+    "prompt_tokens": 500,
+    "completion_tokens": 200,
+    "total_tokens": 700
+  }
+}

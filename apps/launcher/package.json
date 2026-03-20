@@ -1,0 +1,128 @@
+{
+  "name": "@links/launcher",
+  "version": "1.8.9",
+  "private": true,
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build:deps": "pnpm --filter @links/core build && pnpm --filter @links/storage build && pnpm --filter @links/ai build && pnpm --filter @links/logging build && pnpm --filter @links/config build && pnpm --filter @links/web build && pnpm --filter @links/extension build && pnpm --filter @links/licensing build && node scripts/copy-deps.mjs",
+    "build:exe": "pnpm build:deps && electron-vite build && electron-builder --win portable",
+    "build:installer": "pnpm build:deps && electron-vite build && electron-builder --win nsis",
+    "build": "pnpm build:deps && electron-vite build && electron-builder"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0"
+  },
+  "devDependencies": {
+    "@links/licensing": "workspace:*",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "esbuild": "^0.24.0",
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^2.3.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "typescript": "^5.7.3"
+  },
+  "build": {
+    "asar": false,
+    "buildDependenciesFromSource": true,
+    "afterPack": "./scripts/after-pack.cjs",
+    "appId": "com.links.app",
+    "productName": "Links",
+    "directories": {
+      "buildResources": "resources"
+    },
+    "files": [
+      "out/**/*",
+      "resources/**/*",
+      "!**/node_modules/**/__tests__",
+      "!**/node_modules/**/*.test.*",
+      "!**/node_modules/**/*.spec.*",
+      "!**/node_modules/**/*.d.ts.map",
+      "!**/node_modules/**/*.map",
+      "!**/node_modules/@links/**"
+    ],
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**/*",
+      "node_modules/bindings/**/*",
+      "node_modules/file-uri-to-path/**/*"
+    ],
+    "extraFiles": [
+      {
+        "from": "api-dist",
+        "to": "api-dist"
+      },
+      {
+        "from": "worker-dist",
+        "to": "worker-dist"
+      },
+      {
+        "from": "web-dist",
+        "to": "web-dist"
+      },
+      {
+        "from": "../../apps/extension/dist",
+        "to": "extension"
+      },
+      {
+        "from": "../../packages/storage/migrations",
+        "to": "migrations"
+      },
+      {
+        "from": "../../packages/ai/prompts",
+        "to": "prompts"
+      },
+      {
+        "from": "../../packages/ai/roles",
+        "to": "roles"
+      },
+      {
+        "from": "../../whisper",
+        "to": "whisper",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "../../piper",
+        "to": "piper",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "../../voices",
+        "to": "voices",
+        "filter": [
+          "en_US-ryan-medium.onnx",
+          "en_US-ryan-medium.onnx.json"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "include": "build/installer.nsh"
+    },
+    "portable": {
+      "artifactName": "${productName}_v${version}.exe"
+    }
+  }
+}

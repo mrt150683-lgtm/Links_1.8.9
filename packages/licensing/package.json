@@ -1,0 +1,30 @@
+{
+  "name": "@links/licensing",
+  "version": "0.1.8",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "!dist/__tests__"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@noble/ed25519": "^2.1.0",
+    "@noble/hashes": "^1.4.0",
+    "json-stable-stringify": "^1.1.1",
+    "node-machine-id": "^1.1.12",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/json-stable-stringify": "^1.0.36",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

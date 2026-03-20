@@ -1,0 +1,18 @@
+{
+  "id": "gen-brief-fixture-001",
+  "choices": [
+    {
+      "message": {
+        "role": "assistant",
+        "content": "{\"title\":\"Vector Database + ML Framework Integration\",\"concept\":\"These two repositories complement each other perfectly: one provides high-performance vector storage while the other offers ML tooling that needs exactly such storage. Together they enable efficient similarity search pipelines.\",\"repos\":[{\"full_name\":\"example/repo-alpha\",\"why_it_fits\":\"Provides the vector database layer with REST API and SDK support.\",\"integration_role\":\"producer\"},{\"full_name\":\"example/repo-beta\",\"why_it_fits\":\"ML framework that can consume vector databases for embedding storage.\",\"integration_role\":\"consumer\"}],\"outreach_message\":\"Hi! We noticed your projects share complementary capabilities around vector storage and ML tooling. We think there might be an interesting integration opportunity worth exploring. Would you be open to a brief conversation about potential collaboration? No pressure at all — just thought it was worth a mention.\"}"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "model": "anthropic/claude-3-5-haiku-20241022",
+  "usage": {
+    "prompt_tokens": 600,
+    "completion_tokens": 250,
+    "total_tokens": 850
+  }
+}

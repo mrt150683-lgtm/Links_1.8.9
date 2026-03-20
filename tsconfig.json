@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": ["vitest.config.ts"],
+  "references": [
+    { "path": "./packages/config" },
+    { "path": "./packages/logging" },
+    { "path": "./packages/licensing" },
+    { "path": "./packages/core" },
+    { "path": "./packages/storage" },
+    { "path": "./apps/api" }
+  ]
+}

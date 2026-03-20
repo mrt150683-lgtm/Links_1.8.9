@@ -1,0 +1,3 @@
+-- Migration 016: Planning Module tables
+-- Note: payload_json was already added to processing_jobs by migration 015 (journal module)
+-- This migration is reserved for future planning-related schema changes

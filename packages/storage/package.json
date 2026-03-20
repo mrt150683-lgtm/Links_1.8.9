@@ -1,0 +1,26 @@
+{
+  "name": "@links/storage",
+  "version": "0.1.8",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@links/config": "workspace:*",
+    "@links/core": "workspace:*",
+    "better-sqlite3": "^11.10.0",
+    "kysely": "^0.27.4",
+    "@noble/ciphers": "^1.0.0",
+    "@noble/hashes": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

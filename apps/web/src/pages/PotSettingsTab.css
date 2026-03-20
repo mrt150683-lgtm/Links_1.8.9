@@ -1,0 +1,156 @@
+.pot-settings-tab {
+  padding: 1.5rem;
+  max-width: 680px;
+}
+
+.pot-settings-tab--loading {
+  color: var(--text-muted, #888);
+  font-size: 0.9rem;
+}
+
+.pot-settings-tab__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold, #c9a227);
+  margin: 0 0 1.5rem;
+}
+
+.pot-settings-tab__section {
+  margin-bottom: 1.5rem;
+}
+
+.pot-settings-tab__label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary, #e0d8c8);
+  margin-bottom: 0.3rem;
+}
+
+.pot-settings-tab__hint {
+  font-size: 0.78rem;
+  color: var(--text-muted, #888);
+  margin: 0 0 0.5rem;
+}
+
+.pot-settings-tab__textarea {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  background: var(--bg-primary, #1a1a1a);
+  border: 1px solid var(--border, #3a3a3a);
+  border-radius: 6px;
+  color: var(--text-primary, #e0d8c8);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+}
+.pot-settings-tab__textarea:focus {
+  border-color: var(--gold, #c9a227);
+}
+
+/* Role buttons */
+.pot-settings-tab__role-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.pot-settings-tab__role-btn {
+  font-size: 0.82rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--border, #3a3a3a);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary, #c0b89a);
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+.pot-settings-tab__role-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.pot-settings-tab__role-btn--selected {
+  background: rgba(201, 162, 39, 0.15);
+  border-color: rgba(201, 162, 39, 0.5);
+  color: var(--gold, #c9a227);
+}
+
+/* Search target buttons */
+.pot-settings-tab__targets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.pot-settings-tab__target {
+  font-size: 0.78rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--border, #3a3a3a);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary, #c0b89a);
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+.pot-settings-tab__target:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.pot-settings-tab__target--selected {
+  background: rgba(201, 162, 39, 0.15);
+  border-color: rgba(201, 162, 39, 0.4);
+  color: var(--gold, #c9a227);
+}
+
+/* DYK interval number input */
+.pot-settings-tab__number {
+  width: 100px;
+  padding: 0.45rem 0.7rem;
+  background: var(--bg-primary, #1a1a1a);
+  border: 1px solid var(--border, #3a3a3a);
+  border-radius: 6px;
+  color: var(--text-primary, #e0d8c8);
+  font-size: 0.88rem;
+  outline: none;
+}
+.pot-settings-tab__number:focus {
+  border-color: var(--gold, #c9a227);
+}
+
+/* Error */
+.pot-settings-tab__error {
+  font-size: 0.83rem;
+  color: #e05050;
+  background: rgba(224, 80, 80, 0.08);
+  border: 1px solid rgba(224, 80, 80, 0.25);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Footer */
+.pot-settings-tab__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border, #3a3a3a);
+}
+
+.pot-settings-tab__save-btn {
+  padding: 0.5rem 1.4rem;
+  background: rgba(201, 162, 39, 0.15);
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  border-radius: 6px;
+  color: var(--gold, #c9a227);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.pot-settings-tab__save-btn:hover:not(:disabled) {
+  background: rgba(201, 162, 39, 0.25);
+}
+.pot-settings-tab__save-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

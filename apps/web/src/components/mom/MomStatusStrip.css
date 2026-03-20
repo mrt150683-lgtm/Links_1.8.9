@@ -1,0 +1,175 @@
+/* MomStatusStrip — inline MoM execution progress strip */
+
+.mom-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--color-surface-raised, #1e2130);
+  border: 1px solid var(--color-border-subtle, #2d3148);
+  border-radius: 8px;
+  margin: 0 12px 8px;
+  font-size: 12px;
+  color: var(--color-text-secondary, #9099b5);
+  transition: all 0.2s;
+}
+
+.mom-strip--done {
+  border-color: var(--color-accent-dim, #3d4a6b);
+}
+
+.mom-strip--failed {
+  border-color: var(--color-error-dim, #5c2a2a);
+  background: var(--color-error-surface, #1f1515);
+}
+
+.mom-strip--badge {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  cursor: pointer;
+  color: var(--color-text-tertiary, #6b7494);
+  background: transparent;
+  border-style: dashed;
+}
+
+.mom-strip--badge:hover {
+  color: var(--color-text-secondary, #9099b5);
+  background: var(--color-surface-raised, #1e2130);
+}
+
+.mom-strip__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mom-strip__label {
+  font-weight: 500;
+  color: var(--color-text-primary, #c8d0e8);
+  flex: 1;
+}
+
+.mom-strip__badge-icon {
+  opacity: 0.5;
+}
+
+.mom-strip__progress {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent, #6b8ce8);
+}
+
+.mom-strip__cancel {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-tertiary, #6b7494);
+  padding: 0 4px;
+  line-height: 1;
+  font-size: 12px;
+}
+
+.mom-strip__cancel:hover:not(:disabled) {
+  color: var(--color-error, #e87070);
+}
+
+.mom-strip__cancel:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.mom-strip__collapse {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-tertiary, #6b7494);
+  padding: 0 4px;
+  line-height: 1;
+  font-size: 14px;
+}
+
+.mom-strip__collapse:hover {
+  color: var(--color-text-secondary, #9099b5);
+}
+
+.mom-strip__stages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.mom-strip__stage {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--color-surface, #161824);
+  color: var(--color-text-tertiary, #6b7494);
+  font-size: 11px;
+  transition: all 0.2s;
+}
+
+.mom-strip__stage::before {
+  content: '·';
+  margin-left: -4px;
+  margin-right: 2px;
+  opacity: 0.4;
+}
+
+.mom-strip__stage:first-child::before {
+  display: none;
+}
+
+.mom-strip__stage--current {
+  color: var(--color-accent, #6b8ce8);
+  background: color-mix(in srgb, var(--color-accent, #6b8ce8) 12%, transparent);
+}
+
+.mom-strip__stage--done {
+  color: var(--color-success, #4caf89);
+}
+
+.mom-strip__check {
+  font-size: 10px;
+}
+
+.mom-strip__spinner {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: mom-spin 0.7s linear infinite;
+}
+
+@keyframes mom-spin {
+  to { transform: rotate(360deg); }
+}
+
+.mom-strip__error {
+  color: var(--color-error, #e87070);
+  font-size: 11px;
+}
+
+.mom-strip__trace-btn {
+  background: none;
+  border: 1px solid var(--color-border-subtle, #2d3148);
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--color-accent, #6b8ce8);
+  padding: 2px 8px;
+  font-size: 11px;
+  align-self: flex-start;
+}
+
+.mom-strip__trace-btn:hover {
+  background: color-mix(in srgb, var(--color-accent, #6b8ce8) 10%, transparent);
+}
+
+.mom-strip__trace-btn--inline {
+  margin-top: 2px;
+}

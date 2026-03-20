@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "lib": ["ES2022", "DOM"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "out"
+  },
+  "include": ["src/renderer/**/*", "src/shared/**/*"]
+}

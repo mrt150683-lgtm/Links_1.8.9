@@ -1,0 +1,27 @@
+{
+  "name": "@links/mcp",
+  "version": "0.10.8",
+  "type": "module",
+  "main": "./dist/server.js",
+  "scripts": {
+    "dev": "node --watch --loader ts-node/esm src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@links/config": "workspace:*",
+    "@links/core": "workspace:*",
+    "@links/logging": "workspace:*",
+    "@links/storage": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

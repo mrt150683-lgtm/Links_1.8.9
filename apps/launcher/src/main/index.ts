@@ -1,0 +1,443 @@
+import { app, Tray, Menu, nativeImage, utilityProcess, dialog, BrowserWindow } from 'electron';
+import { join } from 'path';
+import { createServer as createHttpServer } from 'http';
+import { request as httpRequest } from 'http';
+import type { IncomingMessage, ServerResponse } from 'http';
+import { createReadStream, existsSync, statSync, readFileSync, writeFileSync, mkdirSync, unlinkSync } from 'fs';
+import { extname } from 'path';
+import { randomBytes } from 'crypto';
+import Database from 'better-sqlite3';
+import { validateLicense, generateLicenseRequest } from '@links/licensing';
+import { createBrowserWindow } from './browserWindow.js';
+
+const API_PORT = 3000;
+const WEB_PORT = 3001;
+
+// Prevent multiple instances
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+  process.exit(0);
+}
+
+// Hide dock on macOS
+if (process.platform === 'darwin') {
+  app.dock?.hide();
+}
+
+let tray: Tray | null = null;
+let apiProc: ReturnType<typeof utilityProcess.fork> | null = null;
+let workerProc: ReturnType<typeof utilityProcess.fork> | null = null;
+let mainWindow: BrowserWindow | null = null;
+
+const MIME: Record<string, string> = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'application/javascript',
+  '.mjs': 'application/javascript',
+  '.css': 'text/css',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.json': 'application/json',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+  '.ttf': 'font/ttf',
+};
+
+function serveWebUI(webDist: string): void {
+  createHttpServer((req: IncomingMessage, res: ServerResponse) => {
+    const url = req.url ?? '/';
+
+    // Proxy /api/* → API server
+    if (url.startsWith('/api')) {
+      const proxyPath = url.slice(4) || '/';
+      const proxyReq = httpRequest(
+        {
+          hostname: '127.0.0.1',
+          port: API_PORT,
+          path: proxyPath,
+          method: req.method,
+          headers: { ...req.headers, host: `127.0.0.1:${API_PORT}` },
+        },
+        (proxyRes) => {
+          res.writeHead(proxyRes.statusCode ?? 200, proxyRes.headers);
+          proxyRes.pipe(res);
+        },
+      );
+      proxyReq.on('error', () => res.writeHead(502).end('API unavailable'));
+      req.pipe(proxyReq);
+      return;
+    }
+
+    // Serve static files
+    let filePath = join(webDist, url === '/' ? 'index.html' : url.split('?')[0]);
+
+    if (!existsSync(filePath) || !statSync(filePath).isFile()) {
+      filePath = join(webDist, 'index.html'); // SPA fallback
+    }
+
+    const ext = extname(filePath).toLowerCase();
+    res.writeHead(200, { 'Content-Type': MIME[ext] ?? 'application/octet-stream' });
+    createReadStream(filePath).pipe(res);
+  }).listen(WEB_PORT, '127.0.0.1');
+}
+
+function loadUserEnv(userData: string): Record<string, string> {
+  let userEnv: Record<string, string> = {};
+  const envPath = join(userData, '.env');
+
+  if (existsSync(envPath)) {
+    try {
+      const content = readFileSync(envPath, 'utf-8');
+      content.split(/\r?\n/).forEach((line) => {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) return;
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx !== -1) {
+          const k = trimmed.substring(0, eqIdx).trim();
+          const v = trimmed.substring(eqIdx + 1).trim();
+          if (k) userEnv[k] = v;
+        }
+      });
+    } catch (e) {
+      console.warn(`[launcher] loadUserEnv parsing failed:`, e);
+    }
+  }
+  return userEnv;
+}
+
+function ensureEnvConfig(userData: string): void {
+  const userEnv = loadUserEnv(userData);
+  let modified = false;
+
+  const installerEnvPath = join(userData, '.env.installer');
+  if (existsSync(installerEnvPath)) {
+    try {
+      const installerContent = readFileSync(installerEnvPath, 'utf-8');
+      installerContent.split(/\r?\n/).forEach((line) => {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) return;
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx !== -1) {
+          const k = trimmed.substring(0, eqIdx).trim();
+          const v = trimmed.substring(eqIdx + 1).trim();
+          if (k === 'OPENROUTER_API_KEY' && v) {
+            userEnv[k] = v;
+            modified = true;
+          }
+        }
+      });
+      unlinkSync(installerEnvPath);
+    } catch (e) {
+      console.warn(`[launcher] Failed to process .env.installer:`, e);
+    }
+  }
+
+  if (!userEnv['ENCRYPTION_KEY'] || userEnv['ENCRYPTION_KEY'].length !== 64) {
+    userEnv['ENCRYPTION_KEY'] = randomBytes(32).toString('hex');
+    modified = true;
+  }
+
+  if (!userEnv['EXT_BOOTSTRAP_TOKEN'] || userEnv['EXT_BOOTSTRAP_TOKEN'].length !== 64) {
+    userEnv['EXT_BOOTSTRAP_TOKEN'] = randomBytes(32).toString('hex');
+    modified = true;
+  }
+
+  if (modified) {
+    let outputRaw = `# Links Configuration\n# Auto-generated by Launcher\n\n`;
+    for (const [key, val] of Object.entries(userEnv)) {
+      outputRaw += `${key}=${val}\n`;
+    }
+
+    try {
+      mkdirSync(userData, { recursive: true });
+      writeFileSync(join(userData, '.env'), outputRaw, { encoding: 'utf-8', mode: 0o600 });
+      console.log(`[launcher] Successfully enforced .env integrity checks in ${userData}`);
+    } catch (e) {
+      console.warn(`[launcher] Failed to enforce .env integrity:`, e);
+    }
+  }
+}
+
+function getLoggingPrefs(dbPath: string) {
+  if (!existsSync(dbPath)) return { enabled: true, level: 'warn' };
+  try {
+    const db = new Database(dbPath);
+    const row = db.prepare('SELECT value_json FROM user_prefs WHERE key = ?').get('system.logging') as { value_json: string } | undefined;
+    db.close();
+    if (row) {
+      return JSON.parse(row.value_json);
+    }
+  } catch (err) {
+    console.warn('[launcher] Failed to read logging prefs from DB:', err);
+  }
+  return { enabled: true, level: 'warn' };
+}
+
+function spawnApi(userData: string, apiEntry: string, logging: { enabled: boolean, level: string }): void {
+  const asarUnpacked = join(process.resourcesPath, 'app.asar.unpacked', 'node_modules');
+  const appModules = join(process.resourcesPath, 'app', 'node_modules');
+  const unpackedModules = existsSync(asarUnpacked) ? asarUnpacked : appModules;
+
+  const userEnv = loadUserEnv(userData);
+
+  apiProc = utilityProcess.fork(apiEntry, [], {
+    env: {
+      ...process.env,
+      ...userEnv,
+      NODE_ENV: 'production',
+      PORT: String(API_PORT),
+      HOST: userEnv['HOST'] ?? '127.0.0.1',
+      LOG_LEVEL: logging.level,
+      DATABASE_PATH: join(userData, 'links.db'),
+      ASSETS_DIR: join(userData, 'assets'),
+      EXPORTS_DIR: join(userData, 'exports'),
+      PROMPTS_DIR: join(process.resourcesPath, 'app', 'resources', 'prompts'),
+      ROLES_DIR: join(process.resourcesPath, '..', 'roles'),
+      VOICES_DIR: join(process.resourcesPath, '..', 'voices'),
+      WHISPER_BIN: join(process.resourcesPath, '..', 'whisper', 'whisper-cli.exe'),
+      WHISPER_MODEL: join(process.resourcesPath, '..', 'whisper', 'ggml-base.en.bin'),
+      PIPER_BIN: join(process.resourcesPath, '..', 'piper', 'piper.exe'),
+      USER_ROLES_DIR: join(userData, 'roles'),
+      LINKS_LICENSE_DIR: userData,
+      LINKS_LICENSE_VALIDATED: '1',
+      NODE_PATH: unpackedModules,
+    },
+    stdio: logging.enabled ? 'pipe' : 'ignore',
+  });
+
+  if (!logging.enabled) return;
+
+  const logPath = join(userData, 'api.log');
+  const { createWriteStream } = require('fs');
+  const { mkdirSync } = require('fs');
+  mkdirSync(userData, { recursive: true });
+  const logStream = createWriteStream(logPath, { flags: 'a' });
+  logStream.write(`\n--- API started at ${new Date().toISOString()} ---\n`);
+  logStream.write(`  entry: ${apiEntry}\n`);
+  logStream.write(`  NODE_PATH: ${unpackedModules}\n`);
+  logStream.write(`  NODE_PATH exists: ${existsSync(unpackedModules)}\n`);
+  logStream.write(`  better-sqlite3 exists: ${existsSync(join(unpackedModules, 'better-sqlite3'))}\n`);
+  logStream.write(`  DATABASE_PATH: ${join(userData, 'links.db')}\n`);
+  const envPath = join(userData, '.env');
+  logStream.write(`  .env file: ${envPath} (exists: ${existsSync(envPath)})\n`);
+  logStream.write(`  userEnv keys: ${Object.keys(userEnv).join(', ')}\n`);
+  logStream.write(`  ENCRYPTION_KEY set: ${!!userEnv['ENCRYPTION_KEY']} (len=${(userEnv['ENCRYPTION_KEY'] || '').length})\n`);
+
+  let lastStderr = '';
+  apiProc.stdout?.on('data', (d: Buffer) => logStream.write(d));
+  apiProc.stderr?.on('data', (d: Buffer) => {
+    const text = d.toString();
+    lastStderr = text;
+    logStream.write(d);
+  });
+
+  apiProc.on('exit', (code) => {
+    const msg = `[launcher] API process exited with code ${code}\n`;
+    console.error(msg);
+    logStream.write(msg);
+    if (code !== 0 && !lastStderr) {
+      const hint = '[launcher] API crashed with no error output. Check api.log for details or run the API bundle directly with node to see the error.\n';
+      console.error(hint);
+      logStream.write(hint);
+    }
+  });
+}
+
+function spawnWorker(userData: string, workerEntry: string, logging: { enabled: boolean, level: string }): void {
+  const asarUnpacked = join(process.resourcesPath, 'app.asar.unpacked', 'node_modules');
+  const appModules = join(process.resourcesPath, 'app', 'node_modules');
+  const unpackedModules = existsSync(asarUnpacked) ? asarUnpacked : appModules;
+
+  const userEnv = loadUserEnv(userData);
+
+  const promptsDir = join(process.resourcesPath, '..', 'prompts');
+
+  workerProc = utilityProcess.fork(workerEntry, [], {
+    env: {
+      ...process.env,
+      ...userEnv,
+      NODE_ENV: 'production',
+      LOG_LEVEL: logging.level,
+      DATABASE_PATH: join(userData, 'links.db'),
+      ASSETS_DIR: join(userData, 'assets'),
+      EXPORTS_DIR: join(userData, 'exports'),
+      PROMPTS_DIR: promptsDir,
+      ROLES_DIR: join(process.resourcesPath, '..', 'roles'),
+      USER_ROLES_DIR: join(userData, 'roles'),
+      LINKS_LICENSE_DIR: userData,
+      LINKS_LICENSE_VALIDATED: '1',
+      NODE_PATH: unpackedModules,
+    },
+    stdio: logging.enabled ? 'pipe' : 'ignore',
+  });
+
+  if (!logging.enabled) return;
+
+  const logPath = join(userData, 'worker.log');
+  const { createWriteStream } = require('fs');
+  const { mkdirSync } = require('fs');
+  mkdirSync(userData, { recursive: true });
+  const logStream = createWriteStream(logPath, { flags: 'a' });
+  logStream.write(`\n--- Worker started at ${new Date().toISOString()} ---\n`);
+  logStream.write(`  entry: ${workerEntry}\n`);
+
+  let lastStderr = '';
+  workerProc.stdout?.on('data', (d: Buffer) => logStream.write(d));
+  workerProc.stderr?.on('data', (d: Buffer) => {
+    const text = d.toString();
+    lastStderr = text;
+    logStream.write(d);
+  });
+
+  workerProc.on('exit', (code) => {
+    const msg = `[launcher] Worker process exited with code ${code}\n`;
+    console.error(msg);
+    logStream.write(msg);
+    if (code !== 0 && !lastStderr) {
+      const hint = '[launcher] Worker crashed with no error output. Check worker.log for details.\n';
+      console.error(hint);
+      logStream.write(hint);
+    }
+  });
+}
+
+function showOrFocusMainWindow(): void {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.show();
+    mainWindow.focus();
+  } else {
+    mainWindow = createBrowserWindow();
+    mainWindow.on('closed', () => { mainWindow = null; });
+  }
+}
+
+function setupTray(): void {
+  const iconPath = join(app.getAppPath(), 'resources', 'icon.png');
+  const img = nativeImage.createFromPath(iconPath);
+  const icon = img.isEmpty() ? nativeImage.createEmpty() : img.resize({ width: 16, height: 16 });
+
+  tray = new Tray(icon);
+  tray.setToolTip('Links');
+
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'Open Links Browser',
+      click: showOrFocusMainWindow,
+    },
+    { type: 'separator' },
+    { label: `API  → localhost:${API_PORT}`, enabled: false },
+    { label: `UI   → localhost:${WEB_PORT}`, enabled: false },
+    { type: 'separator' },
+    {
+      label: 'Quit Links',
+      click: () => {
+        apiProc?.kill();
+        workerProc?.kill();
+        app.quit();
+      },
+    },
+  ]);
+
+  tray.setContextMenu(menu);
+  tray.on('click', showOrFocusMainWindow);
+  tray.on('double-click', showOrFocusMainWindow);
+}
+
+function waitForApi(retries = 30): Promise<void> {
+  return new Promise((resolve, reject) => {
+    let attempts = 0;
+    const check = () => {
+      const req = httpRequest(
+        { hostname: '127.0.0.1', port: API_PORT, path: '/health', timeout: 500 },
+        (res) => {
+          if ((res.statusCode ?? 0) < 500) {
+            resolve();
+          } else if (++attempts < retries) {
+            setTimeout(check, 500);
+          } else {
+            reject(new Error('API did not start'));
+          }
+        },
+      );
+      req.on('error', () => {
+        if (++attempts < retries) setTimeout(check, 500);
+        else reject(new Error('API did not start'));
+      });
+      req.end();
+    };
+    setTimeout(check, 1500);
+  });
+}
+
+// Handle second-instance (show existing window)
+app.on('second-instance', () => {
+  showOrFocusMainWindow();
+});
+
+app.whenReady().then(async () => {
+  const userData = app.getPath('userData');
+
+  ensureEnvConfig(userData);
+
+  process.env.LINKS_LICENSE_DIR = userData;
+
+  if (app.isPackaged) {
+    process.env.NODE_ENV = 'production';
+  }
+
+  // Validate license
+  const licResult = await validateLicense();
+  if (!licResult.valid) {
+    const req = await generateLicenseRequest(app.getVersion());
+    const reqPath = join(userData, 'license-request.licreq');
+    writeFileSync(reqPath, JSON.stringify(req, null, 2));
+    dialog.showErrorBox(
+      'Links — License Required',
+      `License validation failed: ${licResult.reason}\n\n` +
+      `A license request file has been saved to:\n${reqPath}\n\n` +
+      `Send this file to obtain a license, then place the license.lic file in:\n${userData}`
+    );
+    app.quit();
+    return;
+  }
+
+  const appRoot = join(process.resourcesPath, '..');
+  const apiEntry = join(appRoot, 'api-dist', 'bundle.cjs');
+  const workerEntry = join(appRoot, 'worker-dist', 'bundle.cjs');
+  const webDist = join(appRoot, 'web-dist');
+
+  const logging = getLoggingPrefs(join(userData, 'links.db'));
+
+  spawnApi(userData, apiEntry, logging);
+  spawnWorker(userData, workerEntry, logging);
+  serveWebUI(webDist);
+  setupTray();
+
+  try {
+    await waitForApi();
+  } catch {
+    // Open anyway if API is slow to start
+  }
+
+  // Open the browser window instead of shell.openExternal
+  mainWindow = createBrowserWindow();
+  mainWindow.on('closed', () => { mainWindow = null; });
+});
+
+app.on('window-all-closed', () => {
+  // Stay in tray — do not quit
+});
+
+app.on('activate', () => {
+  // macOS: re-open window when dock icon clicked
+  showOrFocusMainWindow();
+});
+
+app.on('before-quit', () => {
+  apiProc?.kill();
+  workerProc?.kill();
+});

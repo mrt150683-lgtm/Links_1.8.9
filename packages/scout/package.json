@@ -1,0 +1,33 @@
+{
+  "name": "@links/scout",
+  "version": "0.1.0",
+  "description": "GitHub collaboration discovery & RepoForge engine",
+  "type": "module",
+  "main": "dist/lib.js",
+  "types": "dist/lib.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/lib.js",
+      "types": "./dist/lib.d.ts"
+    }
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/node": "^20.14.9",
+    "typescript": "^5.5.3",
+    "vitest": "^1.6.0"
+  }
+}

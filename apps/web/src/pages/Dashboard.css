@@ -1,0 +1,193 @@
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-8);
+}
+
+.dashboard__header h1 {
+  margin: 0;
+}
+
+.dashboard__actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+/* Status Strip */
+.dashboard__status {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.status-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: linear-gradient(180deg, var(--surface-0) 0%, #141B22 100%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-card);
+}
+
+.status-card__label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-2);
+}
+
+.status-card__value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-0);
+}
+
+/* Dashboard Grid */
+.dashboard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .dashboard__grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tile Card */
+.tile-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  background: linear-gradient(180deg, var(--surface-0) 0%, #141B22 100%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  text-align: center;
+  transition: all 140ms ease;
+  min-height: 180px;
+}
+
+.tile-card:hover:not(:disabled) {
+  border-color: #3A4653;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+.tile-card:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.tile-card--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tile-card__icon-wrapper {
+  position: relative;
+}
+
+.tile-card__icon-img {
+  height: 48px;
+  width: 48px;
+  object-fit: contain;
+}
+
+.icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  line-height: 1;
+  height: 48px;
+  width: 48px;
+}
+
+.tile-card__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  background: var(--gold-1);
+  color: var(--bg-0);
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tile-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.tile-card__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-0);
+}
+
+.tile-card__subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+/* Heartbeat Status Section */
+.dashboard__heartbeat {
+  margin-top: var(--space-6, 24px);
+}
+
+.dashboard__section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2, #888);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dashboard__section-sub {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-3, #666);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.dashboard__heartbeat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}

@@ -1,0 +1,48 @@
+{
+  "total_count": 3,
+  "incomplete_results": false,
+  "items": [
+    {
+      "id": 1001,
+      "full_name": "example/repo-alpha",
+      "html_url": "https://github.com/example/repo-alpha",
+      "description": "A vector database library",
+      "stargazers_count": 1500,
+      "forks_count": 120,
+      "topics": ["vector-db", "embeddings", "search"],
+      "language": "TypeScript",
+      "license": { "spdx_id": "MIT" },
+      "pushed_at": "2024-10-01T12:00:00Z",
+      "archived": false,
+      "fork": false
+    },
+    {
+      "id": 1002,
+      "full_name": "example/repo-beta",
+      "html_url": "https://github.com/example/repo-beta",
+      "description": "ML pipeline tooling",
+      "stargazers_count": 800,
+      "forks_count": 45,
+      "topics": ["machine-learning", "pipeline"],
+      "language": "Python",
+      "license": { "spdx_id": "Apache-2.0" },
+      "pushed_at": "2024-11-15T08:30:00Z",
+      "archived": false,
+      "fork": false
+    },
+    {
+      "id": 1003,
+      "full_name": "example/repo-gamma",
+      "html_url": "https://github.com/example/repo-gamma",
+      "description": "Distributed caching layer",
+      "stargazers_count": 300,
+      "forks_count": 22,
+      "topics": ["caching", "distributed-systems"],
+      "language": "Go",
+      "license": { "spdx_id": "MIT" },
+      "pushed_at": "2024-09-20T16:45:00Z",
+      "archived": false,
+      "fork": false
+    }
+  ]
+}

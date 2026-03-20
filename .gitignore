@@ -1,0 +1,62 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+build
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+data/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Claude Code local settings (machine-specific)
+.claude/
+
+# Testing
+coverage
+
+# Temp
+tmp
+temp
+
+# Service management
+.pids
+
+# Launcher Artifacts
+api-dist/
+worker-dist/
+web-dist/
+packages/userData/
+
+# License files (personal / machine-bound — not for public repo)
+*.lic
+*.licreq
+License Requests/
+CLEAN_LICENSE.lic
+CLEAN_NEW_KEYS.json
+new-keys.txt
+laptop_license.lic
+license.lic

@@ -1,0 +1,28 @@
+{
+  "name": "@links/worker",
+  "version": "0.1.8",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@links/ai": "workspace:*",
+    "@links/config": "workspace:*",
+    "@links/core": "workspace:*",
+    "@links/licensing": "workspace:*",
+    "@links/logging": "workspace:*",
+    "@links/storage": "workspace:*",
+    "jszip": "^3.10.1",
+    "mammoth": "^1.11.0",
+    "pdf-parse": "1.1.1",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.2"
+  }
+}

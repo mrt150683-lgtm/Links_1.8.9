@@ -1,0 +1,110 @@
+.delete-modal {
+  max-width: 600px;
+}
+
+.delete-modal__icon {
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: var(--space-2);
+}
+
+.delete-modal__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.delete-modal__item {
+  padding: var(--space-4);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-input);
+  text-align: center;
+}
+
+.delete-modal__item strong {
+  color: var(--gold-1);
+  font-size: 16px;
+}
+
+.delete-modal__consequences {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.delete-modal__warning {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-1);
+}
+
+.delete-modal__list {
+  margin: 0;
+  padding-left: var(--space-6);
+  list-style: none;
+}
+
+.delete-modal__list li {
+  position: relative;
+  padding: var(--space-2) 0;
+  font-size: 14px;
+  color: var(--text-0);
+}
+
+.delete-modal__list li::before {
+  content: '•';
+  position: absolute;
+  left: -20px;
+  color: var(--text-2);
+}
+
+.delete-modal__list-item--warning {
+  color: var(--danger) !important;
+}
+
+.delete-modal__list-item--warning::before {
+  color: var(--danger) !important;
+  content: '⚠' !important;
+}
+
+.delete-modal__danger-zone {
+  padding: var(--space-4);
+  background: rgba(208, 106, 106, 0.1);
+  border: 1px solid var(--danger);
+  border-radius: var(--r-input);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.delete-modal__danger-text {
+  margin: 0;
+  font-size: 14px;
+  color: var(--danger);
+  line-height: 1.5;
+}
+
+.delete-modal__danger-text strong {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.btn-danger {
+  background: linear-gradient(180deg, #D06A6A 0%, #B85555 100%);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(208, 106, 106, 0.3);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: linear-gradient(180deg, #E07575 0%, #D06A6A 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(208, 106, 106, 0.4);
+}
+
+.btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

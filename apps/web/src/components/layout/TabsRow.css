@@ -1,0 +1,125 @@
+.tabs-row {
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 var(--space-6);
+}
+
+.tabs-nav {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 140ms ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.tab:hover {
+  color: var(--text-0);
+  background: rgba(23, 30, 38, 0.3);
+}
+
+.tab--active {
+  color: var(--gold-1);
+  border-bottom-color: var(--gold-1);
+  background: rgba(214, 191, 116, 0.08);
+}
+
+.tab__icon {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.tab__icon-img {
+  height: 18px;
+  width: 18px;
+  object-fit: contain;
+  opacity: 0.8;
+  transition: opacity 140ms ease;
+}
+
+.tab--active .tab__icon {
+  opacity: 1;
+}
+
+.tab--active .tab__icon-img {
+  opacity: 1;
+}
+
+.tab-dropdown {
+  position: relative;
+}
+
+.tab-dropdown__trigger {
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tab-dropdown__caret {
+  font-size: 9px;
+  opacity: 0.6;
+  margin-left: 2px;
+}
+
+.tab-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  min-width: 160px;
+  z-index: 100;
+  background: var(--bg-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 4px 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  list-style: none;
+  margin: 0;
+}
+
+.tab-dropdown__menu li {
+  display: block;
+}
+
+.tab-dropdown__menu .tab {
+  width: 100%;
+  border-bottom: none;
+  border-radius: 4px;
+  padding: var(--space-2) var(--space-4);
+}
+
+@media (max-width: 768px) {
+  .tabs-row {
+    padding: 0 var(--space-4);
+    overflow-x: auto;
+  }
+
+  .tabs-nav {
+    gap: var(--space-1);
+  }
+
+  .tab {
+    padding: var(--space-2) var(--space-3);
+    font-size: 12px;
+  }
+
+  .tab__label {
+    display: none;
+  }
+
+  .tab__icon {
+    font-size: 16px;
+  }
+}

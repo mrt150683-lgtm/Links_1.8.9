@@ -1,0 +1,57 @@
+/* DYK Page */
+.dyk-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem 1.25rem;
+  gap: 1rem;
+  background: var(--bg-primary, #1a1a1a);
+  color: var(--text-primary, #e0d8c8);
+  overflow-y: auto;
+}
+
+.dyk-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dyk-page__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold, #c9a227);
+  margin: 0;
+}
+
+.dyk-page__subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted, #888);
+  margin: 0;
+}
+
+.dyk-page__pot-select {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.dyk-page__label {
+  font-size: 0.85rem;
+  color: var(--text-muted, #888);
+}
+
+.dyk-page__select {
+  padding: 0.35rem 0.6rem;
+  background: var(--bg-secondary, #242424);
+  border: 1px solid var(--border, #3a3a3a);
+  border-radius: 6px;
+  color: var(--text-primary, #e0d8c8);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.dyk-page__empty {
+  color: var(--text-muted, #888);
+  font-size: 0.9rem;
+  padding: 1rem 0;
+}
