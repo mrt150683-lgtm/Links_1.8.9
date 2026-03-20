@@ -6,7 +6,7 @@ Links is a local-first AI research workspace for people dealing with messy infor
 
 It helps you collect material, organise it into isolated project spaces, and turn raw inputs into something usable: searchable context, linked evidence, summaries, questions, patterns, and deeper research workflows.
 
-**Links is now open source.** I built most of this solo. There is a lot already working, a lot that still needs polish, and a lot more I want to build. If you find it useful, break it, improve it, or want to help push it further, contributions are welcome.
+**Links is now open source.** I built most of this solo. There is a lot already working, a lot that still needs polish, and a lot more I want to build. If you find it useful, break it, improve it, or want to help push it further, contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to get started.
 
 ### Demo
 
@@ -23,6 +23,7 @@ It helps you collect material, organise it into isolated project spaces, and tur
 
 - [What Links Is](#what-links-is)
 - [Why It Exists](#why-it-exists)
+- [How AI Works in Links](#how-ai-works-in-links)
 - [Who It Is For](#who-it-is-for)
 - [Core Design Principles](#core-design-principles)
 - [What It Does](#what-it-does)
@@ -89,6 +90,24 @@ The goal is to be **useful, inspectable, modular, and private**.
 
 ---
 
+## How AI Works in Links
+
+Links is **local-first for your data** — all your research, files, notes, and metadata are stored locally in encrypted SQLite databases on your machine. Nothing is synced to the cloud. Nothing phones home.
+
+**AI processing requires an internet connection.** Links routes AI calls through [OpenRouter](https://openrouter.ai), which gives you access to models from OpenAI, Anthropic, Google, Meta, Mistral, xAI, and others — all through a single API key that you control. You choose which model handles which task (tagging, summarisation, research, chat), and you can swap models at any time.
+
+This means:
+- **Your data storage is fully local and encrypted** — always
+- **AI features require an OpenRouter API key** — you sign up, you control the spend, you pick the models
+- **No data is stored on OpenRouter's side** beyond what is needed to process your request (see [OpenRouter's privacy policy](https://openrouter.ai/privacy))
+- **Capture, organisation, search, export/import, and non-AI features work without any API key** — the AI layer is additive, not a gatekeeper
+
+### Planned: Fully Offline AI
+
+Local model support via [Ollama](https://ollama.com) and similar local inference engines is on the roadmap. When that lands, Links will be able to run AI features entirely offline with no external API dependency. The architecture is already designed for this — the AI layer is abstracted behind provider adapters, so swapping OpenRouter for a local backend is a clean change rather than a rewrite.
+
+---
+
 ## Who It Is For
 
 ### Researchers
@@ -112,7 +131,7 @@ If your current system is **50 tabs, 7 notes apps, a graveyard of PDFs, and raw 
 
 | Principle | What it means in practice |
 |---|---|
-| **Local-first** | Data stays on your machine unless you explicitly use your own external AI/API services |
+| **Local-first storage** | Your data stays on your machine in encrypted SQLite databases. No mandatory cloud sync, no telemetry |
 | **Evidence-first** | AI outputs are grounded in captured material, with provenance and validation where applicable |
 | **Provenance always** | Source URLs, timestamps, capture methods, content hashes, and audit records matter |
 | **Originals are immutable** | Raw captures are never silently rewritten; derived AI outputs are stored separately |
@@ -200,9 +219,6 @@ An Electron-based browser with tabs, a capture sidebar, and direct save-to-pot i
 
 ### 16. MCP Server
 A Model Context Protocol server exposing Links tools to external AI clients.
-
-### 17. Local-First Privacy
-Processing runs locally or through your own configured APIs. No mandatory cloud sync, no telemetry-dependent architecture, no vendor lock-in.
 
 ---
 
@@ -331,7 +347,7 @@ The Worker is a separate process from the API and handles queued background jobs
 ### Job Lifecycle
 
 ```text
-queued → running → done | failed | deadletter
+queued -> running -> done | failed | deadletter
 ```
 
 ### Processing Themes
@@ -360,7 +376,14 @@ queued → running → done | failed | deadletter
 
 ## AI Integration
 
-Links routes AI functionality through external model providers while preserving reproducibility and per-task control.
+Links routes AI calls through [OpenRouter](https://openrouter.ai), giving you access to a wide range of models (GPT-4, Claude, Gemini, Llama, Mistral, and many more) through a single API key.
+
+### What This Means
+
+- **You need an OpenRouter account and API key** to use AI features (tagging, summarisation, chat, research, etc.)
+- **You control which models run** — configure per-task model selection (e.g. a fast model for tagging, a capable model for research)
+- **You control the spend** — OpenRouter shows usage and lets you set limits
+- **Non-AI features work without any API key** — capture, organisation, search, export/import all work offline
 
 ### AI Layer Includes
 
@@ -562,6 +585,21 @@ Security is not treated as a decorative paragraph.
 - sanitised logging
 - no secret leakage in audit events
 
+### What Stays Local
+
+- all captured research material
+- all database files
+- all encrypted asset blobs
+- all derived artifacts
+- all audit logs
+- all user preferences and configuration
+
+### What Leaves Your Machine
+
+- AI processing requests are sent to OpenRouter (your API key, your models, your choice)
+- optional web augmentation during deep research fetches public web pages
+- nothing else
+
 ### Provenance and Reproducibility
 
 Every derived artifact carries:
@@ -629,21 +667,20 @@ This is useful when debugging, reviewing behaviour, or proving that a feature di
 
 ## Open Source
 
-This project is now open source.
+This project is now open source under the [MIT License](LICENSE).
 
 I built the majority of it solo over the past year. It has grown well beyond what one person can maintain and improve at the pace it deserves. There is a lot already working, a lot that needs polish, and a lot more I want to build.
 
 ### Contributions Welcome
 
-- bug fixes
-- stability improvements
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide. In short:
+
+- bug fixes and stability improvements
 - test coverage
-- documentation improvements
+- documentation
 - UI cleanup
 - architecture discussions
-- feature proposals that actually fit the direction of the project
-
-There is no formal contribution guide yet. That will come. For now, opening an issue before large changes is the sensible move.
+- feature proposals (open an issue first)
 
 ---
 
@@ -680,14 +717,15 @@ I also want to acknowledge the following repository, which helped inform part of
 
 Things still on the list:
 
+- **offline local model support** (Ollama, llama.cpp) — the architecture is already designed for provider adapters, making this a clean addition rather than a rewrite
 - richer browser workflows and extension integration
-- offline local model support
 - deeper cross-pot analysis and relationship mapping
 - better retention, redaction, and forget workflows
 - casework mode and disclosure-oriented controls
 - broader automation and agent capabilities
 - improved UI polish across the system
-- more packaging, onboarding, and documentation work
+- Linux and macOS packaging
+- more onboarding and documentation work
 
 The goal is not to bolt on random gimmicks.
 
@@ -706,6 +744,6 @@ If you have:
 - bug reports
 - interest in contributing
 
-Open an issue or reach out directly.
+Open an issue, check [CONTRIBUTING.md](CONTRIBUTING.md), or reach out directly.
 
 **Email:** mrt150683@gmail.com
